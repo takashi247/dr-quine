@@ -1,0 +1,10 @@
+# target file
+Colleen
+Grace
+Sully
+
+# object files
+*.o
+
+# config
+.vscode
