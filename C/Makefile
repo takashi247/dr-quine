@@ -1,38 +1,53 @@
-NAME						:= Colleen
+COLLEEN					:= Colleen
+
+GRACE						:= Grace
 
 CC							:= gcc
 
 CFLAGS					:= -Wall -Wextra -Werror
 
-SRCSDIR					:= srcs/
+SRCS_COLLEEN		:= Colleen.c
 
-OBJSDIR					:= objs/
+SRCS_GRACE			:= Grace.c
 
-SRCS						:= Colleen.c
+TMP_COLLEEN			:= tmp_Colleen
 
-TMP							:= tmp_Colleen
-
-VPATH						:= $(SRCSDIR) # set the paths for make to search source files
+GRACE_KID				:= Grace_kid.c
 
 RM							:= rm -rf
 
 .PHONY: all
-all: $(NAME)
+all: $(COLLEEN) $(GRACE)
 
-$(NAME): $(SRCS)
+.PHONY: colleen
+colleen: $(COLLEEN) $(GRACE)
+
+$(COLLEEN): $(SRCS_COLLEEN)
 	$(CC) $(CFLAGS) $^ -o $@
 
-.PHONY: test
-test: all
-	./Colleen > $(TMP); diff $(TMP) $(SRCS)
+.PHONY: grace
+grace: $(GRACE)
+
+$(GRACE): $(SRCS_GRACE)
+	$(CC) $(CFLAGS) $^ -o $@
+
+.PHONY: test_colleen
+test_colleen: colleen
+	./Colleen > $(TMP); diff $(TMP_COLLEEN) $(SRCS_COLLEEN)
+
+.PHONY: test_grace
+test_grace: grace
+	./Grace; diff $(SRCS_GRACE) $(GRACE_KID)
 
 .PHONY: clean
 clean:
-	$(RM) $(TMP)
+	$(RM) $(TMP_COLLEEN)
+	$(RM) $(GRACE_KID)
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(COLLEEN)
+	$(RM) $(GRACE)
 
 .PHONY: re
 re: fclean all
